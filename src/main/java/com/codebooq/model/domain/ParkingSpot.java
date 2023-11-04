@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import org.locationtech.jts.geom.Point;
 
 @Entity
 @AllArgsConstructor
@@ -18,8 +19,7 @@ public class ParkingSpot {
     @Id
     private String id;
 
-    private double latitude;
-    private double longitude;
+    private Point location;
     private ParkingSpotZone parkingSpotZone;
     private boolean occupied;
     private LocalDateTime occupiedTimestamp;

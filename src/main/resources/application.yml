@@ -18,10 +18,14 @@ spring:
       security:
         protocol: SASL_SSL
   datasource:
-    url: jdbc:mysql://zjncmmwsdkhbnre2:q7u6yrbq61e3g1hp@ulsq0qqx999wqz84.chr7pe7iynqr.eu-west-1.rds.amazonaws.com:3306/ipfw17iqvjr2da5i
+#    url: jdbc:mysql://zjncmmwsdkhbnre2:q7u6yrbq61e3g1hp@ulsq0qqx999wqz84.chr7pe7iynqr.eu-west-1.rds.amazonaws.com:3306/ipfw17iqvjr2da5i
+#    driverClassName: com.mysql.cj.jdbc.Driver
+#    username: zjncmmwsdkhbnre2
+#    password: q7u6yrbq61e3g1hp
+    url: jdbc:mysql://localhost:3306/kojkukac
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: zjncmmwsdkhbnre2
-    password: q7u6yrbq61e3g1hp
+    username: root
+    password: eKc92Bud
   jpa:
     hibernate:
       ddl-auto: update
@@ -29,10 +33,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
 
 # Enable logging for H2 database (optional)
 logging:
