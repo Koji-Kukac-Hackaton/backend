@@ -17,8 +17,10 @@ import java.time.LocalTime;
 public class ParkingSpotEvent {
 
     @Id
-    @JsonProperty("Id")
     private String id;
+
+    @JsonProperty("Id")
+    private String parkingSpotId;
 
     @JsonProperty("IsOccupied")
     private boolean isOccupied;
