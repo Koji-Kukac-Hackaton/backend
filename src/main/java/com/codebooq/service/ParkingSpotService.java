@@ -1,9 +1,11 @@
 package com.codebooq.service;
 
 import com.codebooq.client.CodebooqAPI;
+import com.codebooq.model.domain.ParkingSpot;
 import com.codebooq.model.domain.request.CreateParkingSpot;
 import com.codebooq.model.domain.request.ReserveParkingSpotRequest;
 import com.codebooq.model.domain.response.ParkingSpotResponse;
+import com.codebooq.repository.ParkingSpotRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +18,11 @@ public class ParkingSpotService {
 
     private final CodebooqAPI codebooqAPI;
 
+    private final ParkingSpotRepository parkingSpotRepository;
 
-    public List<ParkingSpotResponse> getAllParkingSpots() {
-        return codebooqAPI.getAllParkingSpots();
+
+    public List<ParkingSpot> getAllParkingSpots() {
+        return parkingSpotRepository.findAll();
     }
 
     public void reserveParkingSpot(ReserveParkingSpotRequest request) {

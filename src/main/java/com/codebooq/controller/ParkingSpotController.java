@@ -1,5 +1,6 @@
 package com.codebooq.controller;
 
+import com.codebooq.model.domain.ParkingSpot;
 import com.codebooq.model.domain.request.CreateParkingSpot;
 import com.codebooq.model.domain.request.ReserveParkingSpotRequest;
 import com.codebooq.model.domain.response.ParkingSpotResponse;
@@ -17,7 +18,7 @@ public class ParkingSpotController {
     private final ParkingSpotService parkingSpotService;
 
     @GetMapping("/getAll")
-    public List<ParkingSpotResponse> getAllParkingSpots() {
+    public List<ParkingSpot> getAllParkingSpots() {
         return parkingSpotService.getAllParkingSpots();
     }
 

@@ -18,14 +18,14 @@ spring:
       security:
         protocol: SASL_SSL
   datasource:
-#    url: jdbc:mysql://zjncmmwsdkhbnre2:q7u6yrbq61e3g1hp@ulsq0qqx999wqz84.chr7pe7iynqr.eu-west-1.rds.amazonaws.com:3306/ipfw17iqvjr2da5i
-#    driverClassName: com.mysql.cj.jdbc.Driver
-#    username: zjncmmwsdkhbnre2
-#    password: q7u6yrbq61e3g1hp
-    url: jdbc:mysql://localhost:3306/kojkukac
+    url: jdbc:mysql://root:gQ8vzSyBSk1C7qBlnAmuHoTr8O7mnbfE@mct5aa.stackhero-network.com/root?useSSL=true&requireSSL=true
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
-    password: eKc92Bud
+    password: gQ8vzSyBSk1C7qBlnAmuHoTr8O7mnbfE
+#    url: jdbc:mysql://localhost:3306/kojkukac
+#    driverClassName: com.mysql.cj.jdbc.Driver
+#    username: root
+#    password: eKc92Bud
   jpa:
     hibernate:
       ddl-auto: update
