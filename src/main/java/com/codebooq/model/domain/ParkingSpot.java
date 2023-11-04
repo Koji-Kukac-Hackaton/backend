@@ -4,6 +4,7 @@ import com.codebooq.model.domain.enums.ParkingSpotZone;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import org.locationtech.jts.geom.Point;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Data
 public class ParkingSpot {
 

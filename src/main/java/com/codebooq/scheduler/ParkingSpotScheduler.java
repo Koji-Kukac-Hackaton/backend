@@ -6,6 +6,7 @@ import com.codebooq.model.domain.enums.ParkingSpotZone;
 import com.codebooq.model.domain.response.ParkingSpotResponse;
 import com.codebooq.repository.ParkingSpotRepository;
 import com.codebooq.service.ParkingSpotService;
+import com.codebooq.util.Util;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -36,15 +37,12 @@ public class ParkingSpotScheduler {
             parkingSpot.setParkingSpotZone(ParkingSpotZone.valueOf(response.getParkingSpotZone().toUpperCase()));
             parkingSpot.setOccupiedTimestamp(parkingSpot.getOccupiedTimestamp());
             parkingSpot.setOccupied(response.isOccupied());
-            parkingSpot.setLocation(toPoint(response.getLongitude(), response.getLatitude()));
+            parkingSpot.setLocation(Util.toPoint(response.getLongitude(), response.getLatitude()));
             parkingSpots.add(parkingSpot);
         });
 
         parkingSpotRepository.saveAll(parkingSpots);
     }
 
-    private Point toPoint(double longitude, double latitude) {
-        GeometryFactory geometryFactory = new GeometryFactory();
-        return geometryFactory.createPoint(new Coordinate(longitude, latitude));
-    }
+
 }

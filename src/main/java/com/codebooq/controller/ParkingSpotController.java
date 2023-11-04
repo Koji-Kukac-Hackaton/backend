@@ -23,12 +23,12 @@ public class ParkingSpotController {
     }
 
     @PostMapping("/reserve")
-    public void reserveParkingSpot(ReserveParkingSpotRequest request) {
+    public void reserveParkingSpot(@RequestBody ReserveParkingSpotRequest request) {
         parkingSpotService.reserveParkingSpot(request);
     }
 
     @PostMapping
-    public ParkingSpotResponse createParkingSpot(CreateParkingSpot request) {
+    public ParkingSpotResponse createParkingSpot(@RequestBody CreateParkingSpot request) {
         return parkingSpotService.createParkingSpot(request);
     }
 
