@@ -15,8 +15,7 @@ public class KafkaConfiguration {
         ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
 
-        factory.setConsumerFactory(consumerFactory);
-        factory.setBatchListener(true); // Enable batch listening
+        factory.setBatchListener(true);
 
         return factory;
     }

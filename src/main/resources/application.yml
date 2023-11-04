@@ -5,7 +5,7 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
     consumer:
       group-id: UvenuliTulipani-consumer-group
-      max-poll-records: 50
+      max-poll-records: 100
       fetch-max-wait: 2000
       auto-offset-reset: latest
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer

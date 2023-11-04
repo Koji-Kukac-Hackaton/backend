@@ -24,8 +24,16 @@ public class ParkingSpotService {
     private final ParkingSpotRepository parkingSpotRepository;
 
 
-    public List<ParkingSpot> getAllParkingSpots() {
-        return parkingSpotRepository.findAll();
+    public List<ParkingSpotResponse> getAllParkingSpots() {
+
+        return parkingSpotRepository.findAll().stream().map(parkingSpot -> ParkingSpotResponse.builder()
+                .id(parkingSpot.getId())
+                .latitude(parkingSpot.getLocation().getY())
+                .longitude(parkingSpot.getLocation().getX())
+                .occupied(parkingSpot.isOccupied())
+                .occupiedTimestamp(parkingSpot.getOccupiedTimestamp())
+                .parkingSpotZone(parkingSpot.getParkingSpotZone().name())
+                .build()).toList();
     }
 
     public void reserveParkingSpot(ReserveParkingSpotRequest request) {

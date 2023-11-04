@@ -18,7 +18,7 @@ public class ParkingSpotController {
     private final ParkingSpotService parkingSpotService;
 
     @GetMapping("/getAll")
-    public List<ParkingSpot> getAllParkingSpots() {
+    public List<ParkingSpotResponse> getAllParkingSpots() {
         return parkingSpotService.getAllParkingSpots();
     }
 
