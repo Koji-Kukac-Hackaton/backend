@@ -30,10 +30,10 @@ public class KafkaConsumerService {
     private ParkingSpotEventRepository parkingSpotEventRepository;
     @Autowired
     private ParkingSpotRepository parkingSpotRepository;
-
     @Autowired
     private TransactionTemplate transactionTemplate;
-
+    @Autowired
+    private WebSocketService webSocketService;
 
     @Async
     @KafkaListener(topics = "team6", groupId = "UvenuliTulipani-consumer-group", containerFactory = "kafkaListenerContainerFactory")
@@ -54,6 +54,8 @@ public class KafkaConsumerService {
                     events.forEach(e -> e.setId(UUID.randomUUID().toString()));
                     parkingSpotEventRepository.saveAll(events);
                     processParkingSpots(events);
+                    webSocketService.notifyFrontend(events);  // Notify the frontend
+
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException("Error processing messages", e);
                 }

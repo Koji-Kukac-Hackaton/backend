@@ -44,3 +44,10 @@ codebooq:
     bearer-token: 17d85969-69c0-4dd6-8a81-fb7dfc68c452
     url: https://hackathon.kojikukac.com/api/ParkingSpot
     timeout: 3
+
+zones:
+  base-prices:
+    zone1: 1.8
+    zone2: 1.5
+    zone3: 1.3
+    zone4: 1.0
