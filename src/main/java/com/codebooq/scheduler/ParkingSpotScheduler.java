@@ -32,12 +32,13 @@ public class ParkingSpotScheduler {
         List<ParkingSpotResponse> responseList = codebooqAPI.getAllParkingSpots();
         List<ParkingSpot> parkingSpots = new ArrayList<>();
         responseList.forEach(response -> {
-            ParkingSpot parkingSpot = new ParkingSpot();
-            parkingSpot.setId(response.getId());
-            parkingSpot.setParkingSpotZone(ParkingSpotZone.valueOf(response.getParkingSpotZone().toUpperCase()));
-            parkingSpot.setOccupiedTimestamp(parkingSpot.getOccupiedTimestamp());
-            parkingSpot.setOccupied(response.isOccupied());
-            parkingSpot.setLocation(Util.toPoint(response.getLongitude(), response.getLatitude()));
+            ParkingSpot parkingSpot = ParkingSpot.builder()
+                    .occupied(response.isOccupied())
+                    .occupiedTimestamp(response.getOccupiedTimestamp())
+                    .parkingSpotZone(ParkingSpotZone.valueOf(response.getParkingSpotZone().toUpperCase()))
+                    .location(Util.toPoint(response.getLongitude(), response.getLatitude()))
+                    .id(response.getId())
+                    .build();
             parkingSpots.add(parkingSpot);
         });
 

@@ -22,11 +22,8 @@ public class ParkingSpot {
 
     @Id
     private String id;
-
     private Point location;
     private ParkingSpotZone parkingSpotZone;
     private boolean occupied;
     private LocalDateTime occupiedTimestamp;
-    @OneToMany(mappedBy = "parkingSpot", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Reservation> reservations = new ArrayList<>();
 }

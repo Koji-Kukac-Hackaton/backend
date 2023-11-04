@@ -6,6 +6,7 @@ import com.codebooq.model.domain.Reservation;
 import com.codebooq.model.domain.User;
 import com.codebooq.model.domain.enums.ParkingSpotZone;
 import com.codebooq.model.domain.request.CreateParkingSpot;
+import com.codebooq.model.domain.request.RadiusParkingSpotRequest;
 import com.codebooq.model.domain.request.ReserveParkingSpotRequest;
 import com.codebooq.model.domain.response.ParkingSpotResponse;
 import com.codebooq.repository.ParkingSpotRepository;
@@ -17,6 +18,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +31,6 @@ public class ParkingSpotService {
 
     private final CodebooqAPI codebooqAPI;
     private final ReservationRepository reservationRepository;
-    private final UserRepository userRepository;
     private final ParkingSpotRepository parkingSpotRepository;
 
 
@@ -44,9 +47,7 @@ public class ParkingSpotService {
     }
 
     public void reserveParkingSpot(ReserveParkingSpotRequest request) {
-        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         ParkingSpot parkingSpot = parkingSpotRepository.findById(request.getParkingSpotId())
                 .orElseThrow(() -> new RuntimeException("Parking spot not found"));
@@ -76,5 +77,31 @@ public class ParkingSpotService {
 
     public void deleteParkingSpot(String id) {
         codebooqAPI.deleteParkingSpot(id);
+    }
+
+    public List<ParkingSpotResponse> getParkingSpotsInRadius(RadiusParkingSpotRequest request) {
+        List<Object[]> result = parkingSpotRepository.findWithinRadius(request.getLatitude(), request.getLongitude(), request.getRadius());
+        List<ParkingSpotResponse> responses = new ArrayList<>();
+
+        for(Object[] row : result){
+            String id = (String) row[0];
+            double lat = (Double) row[1];
+            double lon = (Double) row[2];
+            Byte zone = (Byte) row[3];
+            boolean occupied = (Boolean) row[4];
+            LocalDateTime timestamp = row[5] != null ? ((Timestamp) row[5]).toLocalDateTime() : null;
+
+            ParkingSpotResponse response = ParkingSpotResponse.builder()
+                    .id(id)
+                    .latitude(lat)
+                    .longitude(lon)
+                    .parkingSpotZone("ZONE"+zone)
+                    .occupied(occupied)
+                    .occupiedTimestamp(timestamp)
+                    .build();
+
+            responses.add(response);
+        }
+        return responses;
     }
 }

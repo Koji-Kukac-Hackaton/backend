@@ -2,6 +2,7 @@ package com.codebooq.controller;
 
 import com.codebooq.model.domain.ParkingSpot;
 import com.codebooq.model.domain.request.CreateParkingSpot;
+import com.codebooq.model.domain.request.RadiusParkingSpotRequest;
 import com.codebooq.model.domain.request.ReserveParkingSpotRequest;
 import com.codebooq.model.domain.response.ParkingSpotResponse;
 import com.codebooq.service.ParkingSpotService;
@@ -35,6 +36,11 @@ public class ParkingSpotController {
     @DeleteMapping("/{id}")
     public void deleteParkingSpot(@PathVariable("id") String id) {
         parkingSpotService.deleteParkingSpot(id);
+    }
+
+    @GetMapping("/radius")
+    public List<ParkingSpotResponse> getParkingSpotsInRadius(@RequestBody RadiusParkingSpotRequest request) {
+        return parkingSpotService.getParkingSpotsInRadius(request);
     }
 
 }
