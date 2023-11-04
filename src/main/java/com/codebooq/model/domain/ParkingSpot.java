@@ -1,14 +1,16 @@
 package com.codebooq.model.domain;
 
 import com.codebooq.model.domain.enums.ParkingSpotZone;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.locationtech.jts.geom.Point;
 
 @Entity
@@ -25,4 +27,6 @@ public class ParkingSpot {
     private ParkingSpotZone parkingSpotZone;
     private boolean occupied;
     private LocalDateTime occupiedTimestamp;
+    @OneToMany(mappedBy = "parkingSpot", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Reservation> reservations = new ArrayList<>();
 }

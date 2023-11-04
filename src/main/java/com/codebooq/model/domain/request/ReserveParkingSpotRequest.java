@@ -1,9 +1,9 @@
 package com.codebooq.model.domain.request;
 
 
-import lombok.Builder;
+import lombok.Getter;
 
-@Builder
+@Getter
 public class ReserveParkingSpotRequest {
 
     private String parkingSpotId;
