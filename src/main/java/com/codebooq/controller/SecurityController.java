@@ -2,6 +2,7 @@ package com.codebooq.controller;
 
 import com.codebooq.model.domain.request.CreateUserRequest;
 import com.codebooq.model.domain.request.LoginRequest;
+import com.codebooq.model.domain.request.oAuth2LoginRequest;
 import com.codebooq.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +26,13 @@ public class SecurityController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
         return securityService.login(request);
+    }
+
+    @PostMapping("/oauth2-login")
+    public ResponseEntity<String> oauth2Login(@RequestBody oAuth2LoginRequest request) {
+        return securityService.oauth2Login(request);
     }
 
 
