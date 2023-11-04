@@ -42,4 +42,5 @@ logging:
 codebooq:
   api:
     bearer-token: 17d85969-69c0-4dd6-8a81-fb7dfc68c452
-    url: https://hackathon.kojikukac.com/api
+    url: https://hackathon.kojikukac.com/api/ParkingSpot
+    timeout: 3
