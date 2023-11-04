@@ -1,11 +1,19 @@
 spring:
-#  kafka:
-#    bootstrap-servers: <kafka-broker-address>
-#    consumer:
-#      group-id: <group-id>
-#      auto-offset-reset: earliest
-#    producer:
-#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  kafka:
+    bootstrap-servers: cbq-hackathon.servicebus.windows.net:9093
+    producer:
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: UvenuliTulipani-consumer-group
+      auto-offset-reset: earliest
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    properties:
+      sasl:
+        mechanism: PLAIN
+        jaas:
+          config: org.apache.kafka.common.security.plain.PlainLoginModule required username="$ConnectionString" password="Endpoint=sb://cbq-hackathon.servicebus.windows.net/;SharedAccessKeyName=n;SharedAccessKey=BNCQDfe7PKmbM7quJjo2moDhHAp0HfyIp+AEhM5Omfo=;EntityPath=team6";
+      security:
+        protocol: SASL_SSL
   datasource:
     url: jdbc:mysql://localhost:3306/kojkukac
     driverClassName: com.mysql.cj.jdbc.Driver
