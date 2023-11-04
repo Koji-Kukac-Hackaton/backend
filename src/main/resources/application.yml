@@ -33,6 +33,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+  task:
+    scheduling:
+      pool:
+        size: 3
 
 # Enable logging for H2 database (optional)
 logging:

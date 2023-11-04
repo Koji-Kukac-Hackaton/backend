@@ -5,19 +5,17 @@ import com.codebooq.model.domain.ParkingSpot;
 import com.codebooq.model.domain.enums.ParkingSpotZone;
 import com.codebooq.model.domain.response.ParkingSpotResponse;
 import com.codebooq.repository.ParkingSpotRepository;
-import com.codebooq.service.ParkingSpotService;
 import com.codebooq.util.Util;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class ParkingSpotScheduler {
@@ -28,23 +26,43 @@ public class ParkingSpotScheduler {
     @Autowired
     private ParkingSpotRepository parkingSpotRepository;
 
-    @Scheduled(fixedRate = 60000)
-    @Transactional
-    public void fetchParkingSpots() {
+    @Scheduled(cron = "5 * * * * *")
+    public void fetchAndUpdateParkingSpots() {
+        System.out.println("NOW IS " + LocalDateTime.now());
         List<ParkingSpotResponse> responseList = codebooqAPI.getAllParkingSpots();
-        List<ParkingSpot> parkingSpots = new ArrayList<>();
-        responseList.forEach(response -> {
-            ParkingSpot parkingSpot = new ParkingSpot();
-            parkingSpot.setId(response.getId());
-            parkingSpot.setParkingSpotZone(ParkingSpotZone.valueOf(response.getParkingSpotZone().toUpperCase()));
-            parkingSpot.setOccupiedTimestamp(parkingSpot.getOccupiedTimestamp());
-            parkingSpot.setOccupied(response.isOccupied());
-            parkingSpot.setLocation(Util.toPoint(response.getLongitude(), response.getLatitude()));
-            parkingSpots.add(parkingSpot);
-        });
+        List<ParkingSpot> existingParkingSpots = parkingSpotRepository.findAll();
+        Map<String, ParkingSpot> existingParkingSpotMap = existingParkingSpots.stream()
+                .collect(Collectors.toMap(ParkingSpot::getId, Function.identity()));
 
-        parkingSpotRepository.saveAll(parkingSpots);
+        List<ParkingSpot> spotsToUpdate = new ArrayList<>();
+
+        for (ParkingSpotResponse response : responseList) {
+            ParkingSpot existingSpot = existingParkingSpotMap.get(response.getId());
+            if (existingSpot == null || hasChanged(existingSpot, response)) {
+                ParkingSpot parkingSpot = convertResponseToParkingSpot(response);
+                spotsToUpdate.add(parkingSpot);
+            }
+        }
+
+        if (!spotsToUpdate.isEmpty()) {
+            parkingSpotRepository.saveAll(spotsToUpdate);
+        }
     }
 
+    private boolean hasChanged(ParkingSpot existingSpot, ParkingSpotResponse response) {
+        return existingSpot.isOccupied() != response.isOccupied() ||
+                !existingSpot.getParkingSpotZone().equals(ParkingSpotZone.valueOf(response.getParkingSpotZone().toUpperCase()))
+                || !response.getOccupiedTimestamp().equals(existingSpot.getOccupiedTimestamp());
+    }
+
+    private ParkingSpot convertResponseToParkingSpot(ParkingSpotResponse response) {
+        ParkingSpot parkingSpot = new ParkingSpot();
+        parkingSpot.setId(response.getId());
+        parkingSpot.setParkingSpotZone(ParkingSpotZone.valueOf(response.getParkingSpotZone().toUpperCase()));
+        parkingSpot.setOccupiedTimestamp(parkingSpot.getOccupiedTimestamp());
+        parkingSpot.setOccupied(response.isOccupied());
+        parkingSpot.setLocation(Util.toPoint(response.getLongitude(), response.getLatitude()));
+        return parkingSpot;
+    }
 
 }

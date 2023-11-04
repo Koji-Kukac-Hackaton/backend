@@ -42,7 +42,7 @@ public class KafkaConsumerService {
     };
 
     @Async
-    public void processMessagesAsync(List<String> messages) throws JsonProcessingException {
+    public void processMessagesAsync(List<String> messages) {
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus status) {
