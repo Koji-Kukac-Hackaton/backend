@@ -28,4 +28,17 @@ public class ParkingSpotEventService {
                     return response;
                 }).toList();
     }
+
+    public List<ParkingSpotEventResponse> getParkingSpotEventsBySpotId(String parkingSpotId) {
+        List<ParkingSpotEvent> events = parkingSpotEventRepository.findByParkingSpotId(parkingSpotId);
+
+        return events.stream()
+                .map(event -> {
+                    ParkingSpotEventResponse response = new ParkingSpotEventResponse();
+                    response.setParkingSpotId(event.getParkingSpotId());
+                    response.setTime(event.getTime());
+                    response.setOccupied(event.isOccupied());
+                    return response;
+                }).toList();
+    }
 }
