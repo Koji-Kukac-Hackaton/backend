@@ -13,17 +13,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic");
+        config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws")
-                .setAllowedOrigins(
-                        "http://localhost:3001",
-                        "http://localhost:3000",
-                        "https://frontend-two-beta-61.vercel.app"
-                )
-                .withSockJS();
+        registry.addEndpoint("/ws").withSockJS();
     }
-
 }

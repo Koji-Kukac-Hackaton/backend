@@ -1,8 +1,8 @@
 package com.codebooq.scheduler;
 
 import com.codebooq.service.PriceService;
-import com.codebooq.service.WebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import java.util.Map;
 public class PriceSenderScheduler {
 
     @Autowired
-    private WebSocketService webSocketService;
+    private SimpMessagingTemplate template;
 
     @Autowired
     private PriceService priceService;
@@ -21,6 +21,6 @@ public class PriceSenderScheduler {
     public void sendPrices() {
 
         Map<String, Double> map = priceService.calculatePrices();
-        webSocketService.sendPriceToFrontend(map);
+        template.convertAndSend("/topic/parkingSpotEvents", map);
     }
 }

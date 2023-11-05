@@ -10,6 +10,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class KafkaConsumerService {
     @Autowired
     private TransactionTemplate transactionTemplate;
     @Autowired
-    private WebSocketService webSocketService;
+    private SimpMessagingTemplate template;
 
     @Async
     @KafkaListener(topics = "team6", groupId = "UvenuliTulipani-consumer-group", containerFactory = "kafkaListenerContainerFactory")
@@ -53,7 +54,8 @@ public class KafkaConsumerService {
                     events.forEach(e -> e.setId(UUID.randomUUID().toString()));
                     parkingSpotEventRepository.saveAll(events);
                     processParkingSpots(events);
-                    webSocketService.notifyFrontend(events);  // Notify the frontend
+                    template.convertAndSend("/topic/parkingSpotEvents", events);
+
 
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException("Error processing messages", e);

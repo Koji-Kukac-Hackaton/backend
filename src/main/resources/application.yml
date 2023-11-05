@@ -42,6 +42,7 @@ spring:
 logging:
   level:
     com.h2database: debug
+    org.springframework.web.socket: DEBUG
 
 codebooq:
   api:

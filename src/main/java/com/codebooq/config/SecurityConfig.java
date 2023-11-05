@@ -36,7 +36,7 @@ public class SecurityConfig {
     @SneakyThrows
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/ws/**"))
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
                 .authorizeHttpRequests(authorize -> authorize
@@ -57,15 +57,15 @@ public class SecurityConfig {
 
     @Bean
     AuthorizationManager<Message<?>> authorizationManager(MessageMatcherDelegatingAuthorizationManager.Builder messages) {
-        messages.simpSubscribeDestMatchers("topic/price").permitAll();
-        messages.simpSubscribeDestMatchers("topic/parkingSpotEvents").permitAll();
+        messages.simpSubscribeDestMatchers("/topic/price").permitAll();
+        messages.simpSubscribeDestMatchers("/topic/parkingSpotEvents").permitAll();
         return messages.build();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3001", "http://localhost:3000", "https://frontend-two-beta-61.vercel.app"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3001", "https://frontend-qai7-63x4r1a60-ians-projects-4d59aeb6.vercel.app", "https://frontend-two-beta-61.vercel.app"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
         configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
