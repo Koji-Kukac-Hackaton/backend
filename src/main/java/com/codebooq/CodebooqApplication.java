@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @EnableScheduling
 @EnableFeignClients
 @EnableAsync
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class CodebooqApplication {
 
     public static void main(String[] args) {
