@@ -36,6 +36,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/security/**").permitAll()
+                        .requestMatchers("/parking-spot/getAll").permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         .anyRequest().authenticated())
 
