@@ -39,7 +39,7 @@ public class ParkingSpotController {
         parkingSpotService.deleteParkingSpot(id);
     }
 
-    @GetMapping("/radius")
+    @PostMapping("/radius")
     public List<ParkingSpotResponse> getParkingSpotsInRadius(@RequestBody RadiusParkingSpotRequest request) {
         return parkingSpotService.getParkingSpotsInRadius(request);
     }
