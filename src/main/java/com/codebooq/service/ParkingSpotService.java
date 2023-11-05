@@ -17,12 +17,14 @@ import com.codebooq.util.Util;
 import lombok.RequiredArgsConstructor;
 //import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -33,6 +35,7 @@ public class ParkingSpotService {
     private final CodebooqAPI codebooqAPI;
     private final ReservationRepository reservationRepository;
     private final ParkingSpotRepository parkingSpotRepository;
+    private final UserRepository userRepository;
 
 
     public List<ParkingSpotResponse> getAllParkingSpots() {
@@ -49,6 +52,8 @@ public class ParkingSpotService {
 
     public void reserveParkingSpot(ReserveParkingSpotRequest request) {
 
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         ParkingSpot parkingSpot = parkingSpotRepository.findById(request.getParkingSpotId())
                 .orElseThrow(() -> new RuntimeException("Parking spot not found"));
 
@@ -60,11 +65,12 @@ public class ParkingSpotService {
         parkingSpot.setOccupied(true);
 
         Reservation reservation = Reservation.builder()
+                .user(user)
                 .parkingSpot(parkingSpot)
                 .build();
 
-        reservationRepository.save(reservation);
         parkingSpotRepository.save(parkingSpot);
+        reservationRepository.save(reservation);
         codebooqAPI.reserveParkingSpot(request);
     }
 
