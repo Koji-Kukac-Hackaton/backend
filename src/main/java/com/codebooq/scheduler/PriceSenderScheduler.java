@@ -21,7 +21,6 @@ public class PriceSenderScheduler {
     public void sendPrices() {
 
         Map<String, Double> map = priceService.calculatePrices();
-
         webSocketService.sendPriceToFrontend(map);
     }
 }

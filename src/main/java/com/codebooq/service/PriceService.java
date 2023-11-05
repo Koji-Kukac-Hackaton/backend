@@ -42,7 +42,7 @@ public class PriceService {
                 case ZONE3 -> zonePrice = zone3Price;
                 case ZONE4 -> zonePrice = zone4Price;
             }
-            double endPrice = zonePrice * (1 + (currentOccupancy - averageOccupancy) / 100);
+            double endPrice = zonePrice * (1 + (((currentOccupancy - averageOccupancy) / 100) * 5));
             String formattedValue = String.format("%.2f", endPrice);
             double roundedValue = Double.parseDouble(formattedValue);
             prices.put(zone.name(), roundedValue);
