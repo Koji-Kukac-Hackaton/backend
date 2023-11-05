@@ -32,6 +32,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
 
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/security/**").permitAll()
@@ -41,6 +42,7 @@ public class SecurityConfig {
 
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(STATELESS))
+
 
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
