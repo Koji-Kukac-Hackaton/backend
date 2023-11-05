@@ -37,7 +37,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/security/**").permitAll()
                         .requestMatchers("/parking-spot/getAll").permitAll()
+                        .requestMatchers("/price").permitAll()
                         .requestMatchers("/ws/**").permitAll()
+                        .requestMatchers("/user").permitAll()
                         .anyRequest().authenticated())
 
 
@@ -54,7 +56,7 @@ public class SecurityConfig {
 
     @Bean
     AuthorizationManager<Message<?>> authorizationManager(MessageMatcherDelegatingAuthorizationManager.Builder messages) {
-        messages.simpDestMatchers("/ws/**").permitAll();
+        messages.anyMessage().permitAll();
         return messages.build();
     }
 
