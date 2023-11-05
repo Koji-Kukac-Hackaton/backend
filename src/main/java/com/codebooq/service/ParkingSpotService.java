@@ -1,6 +1,7 @@
 package com.codebooq.service;
 
 import com.codebooq.client.CodebooqAPI;
+import com.codebooq.exception.exceptions.ParkingSpotOccupiedException;
 import com.codebooq.model.domain.ParkingSpot;
 import com.codebooq.model.domain.Reservation;
 import com.codebooq.model.domain.User;
@@ -47,19 +48,23 @@ public class ParkingSpotService {
     }
 
     public void reserveParkingSpot(ReserveParkingSpotRequest request) {
-        //User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         ParkingSpot parkingSpot = parkingSpotRepository.findById(request.getParkingSpotId())
                 .orElseThrow(() -> new RuntimeException("Parking spot not found"));
 
+        if (parkingSpot.isOccupied()) {
+            throw new ParkingSpotOccupiedException();
+        }
+
+        parkingSpot.setOccupiedTimestamp(LocalDateTime.now());
+        parkingSpot.setOccupied(true);
+
         Reservation reservation = Reservation.builder()
-                //.user(user)
                 .parkingSpot(parkingSpot)
                 .build();
 
         reservationRepository.save(reservation);
-        codebooqAPI.reserveParkingSpot(request);
-
+        parkingSpotRepository.save(parkingSpot);
         codebooqAPI.reserveParkingSpot(request);
     }
 

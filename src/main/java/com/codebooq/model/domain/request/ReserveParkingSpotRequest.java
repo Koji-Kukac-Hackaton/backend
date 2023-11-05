@@ -1,14 +1,16 @@
 package com.codebooq.model.domain.request;
 
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class ReserveParkingSpotRequest {
 
     private String parkingSpotId;
     private Integer endH;
     private Integer endM;
-
-
 }
