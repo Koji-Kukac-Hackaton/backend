@@ -57,7 +57,8 @@ public class SecurityConfig {
 
     @Bean
     AuthorizationManager<Message<?>> authorizationManager(MessageMatcherDelegatingAuthorizationManager.Builder messages) {
-        messages.anyMessage().permitAll();
+        messages.simpSubscribeDestMatchers("topic/price").permitAll();
+        messages.simpSubscribeDestMatchers("topic/parkingSpotEvents").permitAll();
         return messages.build();
     }
 
