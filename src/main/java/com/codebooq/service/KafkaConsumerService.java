@@ -49,7 +49,6 @@ public class KafkaConsumerService {
                 try {
                     ObjectMapper mapper = new ObjectMapper();
                     mapper.registerModule(new JavaTimeModule());
-                    System.out.println(messages.size());
                     List<ParkingSpotEvent> events = mapper.readValue(messages.toString(), new TypeReference<>() {});
                     events.forEach(e -> e.setId(UUID.randomUUID().toString()));
                     parkingSpotEventRepository.saveAll(events);

@@ -35,8 +35,6 @@ public class PriceService {
         for (ParkingSpotZone zone : ParkingSpotZone.values()) {
             double averageOccupancy = occupancyService.findAverageByHourAndZone(hour, zone.toString());
             double currentOccupancy = occupancyService.findOccupancyByZone(zone.toString());
-            System.out.println(averageOccupancy);
-            System.out.println(currentOccupancy);
             double zonePrice = 0;
             switch (zone) {
                 case ZONE1 -> zonePrice = zone1Price;

@@ -28,7 +28,6 @@ public class ParkingSpotScheduler {
 
     @Scheduled(cron = "5 * * * * *")
     public void fetchAndUpdateParkingSpots() {
-        System.out.println("NOW IS " + LocalDateTime.now());
         List<ParkingSpotResponse> responseList = codebooqAPI.getAllParkingSpots();
         List<ParkingSpot> existingParkingSpots = parkingSpotRepository.findAll();
         Map<String, ParkingSpot> existingParkingSpotMap = existingParkingSpots.stream()
