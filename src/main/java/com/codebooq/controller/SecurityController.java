@@ -16,6 +16,7 @@
 //@RestController
 //@RequestMapping("/security")
 //@RequiredArgsConstructor
+//@CrossOrigin(origins = "*")
 //public class SecurityController {
 //
 //    private final SecurityService securityService;
